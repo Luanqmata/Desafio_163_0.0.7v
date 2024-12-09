@@ -84,6 +84,54 @@ func worker(id int) {
 }
 
 func main() {
+	//-----------------------------------VERIFICA N° THREADS---------------------------------------
+	numCPUs := runtime.NumCPU()
+	cpuInfo, _ := cpu.Info()
+	cpuModelName := "Desconhecido"
+	if len(cpuInfo) > 0 {
+		cpuModelName = cpuInfo[0].ModelName
+	}
+	fmt.Printf("\n\t	Obs: O Seu Computador tem %d threads. (Processador: %s)\n", numCPUs, cpuModelName)
+	//-----------------------------------VERIFICA N° THREADS---------------------------------------
+	//------------------------------------MENSAGEM DE MODOS----------------------------------------
+
+	style.Modos()
+	var escolha_modo int
+	fmt.Scanln(&escolha_modo)
+
+	var numThreads int
+	switch escolha_modo {
+	case 1:
+		numThreads = 3
+	case 2:
+		numThreads = 5
+	case 3:
+		numThreads = 11
+	case 4:
+		numThreads = 17
+	case 5:
+		numThreads = 24
+	case 6:
+		numThreads = runtime.NumCPU()
+	default:
+		fmt.Println("	Escolha inválida. Usando o SECURE MODE...  (20%) - CPU 58°C - 117K Chaves P/seg.")
+		numThreads = 4
+	}
+	style.Mensagem_iniciando(numThreads)
+
+	runtime.GOMAXPROCS(numThreads)
+	startTime = time.Now()
+
+	// Inicia goroutines
+	for i := 0; i < numThreads; i++ {
+		wg.Add(1)
+		go worker(i)
+	}
+	//--------------------------------------EXIBIÇÃO EM TEMPO REAL--------------------------------------
+
+	style.MonitorarChaves(&mu, &contador, &encontrado, startTime, &ultimaChaveGerada)
+
+	//-------------------------------------------MENSAGEM FINAL----------------------------------
 	rand.Seed(time.Now().UnixNano())
 	runtime.GOMAXPROCS(1)
 
