@@ -3,7 +3,9 @@ package main
 import (
 	"carteira_163/encoding"
 	"fmt"
+	"log"
 	"math/rand"
+	"os"
 	"runtime"
 	"sync"
 	"time"
@@ -18,10 +20,9 @@ var (
 	_wifindices_carteira = []string{"4", "3", "3", "4", "c", "f", "6", "9", "f", "3", "a", "c", "5", "0", "4", "b", "b", "7", "2", "6", "8", "7", "8", "a", "4", "0", "8", "3", "3", "3", "7", "3"}
 	memBuffer            = make([]byte, 4*1024*1024*1024)
 	ultima_Wif_gerada    string
-	// ultima_chave_gerada  string
-	mutex                sync.Mutex
-	encontrado           bool
-	wg                   sync.WaitGroup
+	mutex      sync.Mutex
+	encontrado bool
+	wg         sync.WaitGroup
 )
 
 func random_random() string {
@@ -58,13 +59,21 @@ func worker(id int) {
 		mutex.Lock()
 		ultima_Wif_gerada = wif
 		if carteira == carteira_163 {
-			fmt.Print("Carteira Encontrada!!\n")
-			fmt.Print(carteira, "\n")
-			fmt.Print(wif, "\n")
+			output := fmt.Sprint("\n carteira: ", carteira, "\n wif: ", wif)
+			fmt.Print(output)
+			file, err := os.OpenFile("carteira_encontradas.txt", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+			if err != nil {
+				log.Fatalf("Erro ao abrir arquivo: %v", err)
+			}
+			defer file.Close()
+
+			_, err = file.WriteString(output)
+			if err != nil {
+				log.Printf("Erro ao escrever no arquivo: %v", err)
+			}
 			encontrado = true
-		} else {
-			fmt.Print("\n carteira: ", carteira)
-			fmt.Print("\n wif: ", wif)
+			mutex.Unlock() // Libera o mutex
+			return         // Encerra a execução do worker
 		}
 		mutex.Unlock()
 
@@ -76,9 +85,10 @@ func worker(id int) {
 
 func main() {
 	rand.Seed(time.Now().UnixNano())
-	runtime.GOMAXPROCS(8)
-	
-	for i := 0; i < 8; i++ {
+	runtime.GOMAXPROCS(1)
+
+	// Inicia as goroutines
+	for i := 0; i < 1; i++ {
 		wg.Add(1)
 		go worker(i)
 	}
