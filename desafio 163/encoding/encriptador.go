@@ -1,32 +1,40 @@
-//criptografia bitcoinesca
+// criptografia bitcoinesca
 package encoding
 
 import (
+	"carteira_163/crypto/base58"
 	"crypto/sha256"
 	"encoding/hex"
-	"carteira_163/crypto/base58" 
+	"math/rand"
+	"strings"
 
 	"github.com/btcsuite/btcd/btcec"
 	"golang.org/x/crypto/ripemd160"
 )
 
-// Função que gera WIF
-func GenerateWif(privKeyHex string) string {
-	privKeyBytes, err := hex.DecodeString(privKeyHex)
-	if err != nil {
-		panic(err)
+// Constantes usadas
+const caracters_btc = "0123456789abcdef"
+
+// Função para gerar caracteres aleatórios
+func Random_random() string {
+	randomIndex := rand.Intn(len(caracters_btc))
+	randomChar := string(caracters_btc[randomIndex])
+	return randomChar
+}
+
+// Função que gera WIF 163
+func GeradorWif(wif string) string {
+	var wifGerado string
+	wifSplit := strings.Split(wif, "x")
+
+	for i, part := range wifSplit {
+		wifGerado += part
+		if i < len(wifSplit)-1 {
+			wifGerado += Random_random()
+		}
 	}
 
-	extendedKey := append([]byte{byte(0x80)}, privKeyBytes...)
-	extendedKey = append(extendedKey, byte(0x01))
-
-	firstSHA := sha256.Sum256(extendedKey)
-	secondSHA := sha256.Sum256(firstSHA[:])
-	checksum := secondSHA[:4]
-
-	finalKey := append(extendedKey, checksum...)
-	wif := base58.Encode(finalKey)
-	return wif
+	return wifGerado
 }
 
 // Gera o hash160 da chave pública
