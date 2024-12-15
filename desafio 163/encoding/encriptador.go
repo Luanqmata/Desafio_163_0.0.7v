@@ -12,8 +12,13 @@ import (
 	"golang.org/x/crypto/ripemd160"
 )
 
-// Constantes usadas
 const caracters_btc = "0123456789abcdef"
+
+var wifSplit []string
+
+func InitWif(wif string) {
+	wifSplit = strings.Split(wif, "x")
+}
 
 // Função para gerar caracteres aleatórios
 func Random_random() string {
@@ -22,11 +27,9 @@ func Random_random() string {
 	return randomChar
 }
 
-// Função que gera WIF 163
-func GeradorWif(wif string) string {
+// Função que gera WIF 163 usando o valor pré-separado
+func GeradorWif() string {
 	var wifGerado string
-	wifSplit := strings.Split(wif, "x")
-
 	for i, part := range wifSplit {
 		wifGerado += part
 		if i < len(wifSplit)-1 {
