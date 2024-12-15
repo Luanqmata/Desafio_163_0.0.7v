@@ -13,24 +13,25 @@ func Logo_163() {
 			888    888 d8P  Y8b 88K          "88b 888    888 d88""88b       888   888P "Y88b      "Y8b.
 			888    888 88888888 "Y8888b. .d888888 888    888 888  888       888   888    888 888    888
 			888  .d88P Y8b.          X88 888  888 888    888 Y88..88P       888   Y88b  d88P Y88b  d88P
-			8888888P"   "Y8888   88888P' "Y888888 888    888  "Y88P"      8888888  "Y8888P"   "Y8888P"     Moldado para : Xeon E5 2666 v3
+			8888888P"   "Y8888   88888P' "Y888888 888    888  "Y88P"      8888888  "Y8888P"   "Y8888P"      0.0.5v Golang Cpu Miner
 	`)
 }
 
 func Bem_vindo() {
-	fmt.Print("\n\n\t\t\t\t\t\t\t\t~~ Bem vindo ~~\n\n")
+	fmt.Print("\n\n\t\t\t\t\t\t\t\t    ~~ Bem vindo ~~\n\n")
 	Logo_163()
 	fmt.Print("\n\t\t\t\t\t\t\tDesafio do Investidor Internacional (Dii)\n\n")
-	fmt.Print("\n\t\t\t\t\t\t\t\tBy: China /gpt 0.3v\n\n")
+	fmt.Print("\n\t\t\t\t\t\t\t    Moldado para : Xeon E5 2666 v3\n\n")
+	fmt.Print("\n\t\t\t\t\t\t\t\t    By: China /gpt \n\n")
 }
 
 func Opcoes_uso_proc() {
-	fmt.Println("\t\t\t\t\t\t========== Menu de Uso do Processador ==========\n")
+	fmt.Println("\t\t\t\t\t\t========== Menu de Uso do Processador ============\n")
 
 	fmt.Println("\t\t\t\t\t\t\t[1]  25%   ▓▓▓░░░░░░░░░░░░░░")
 	fmt.Println("\t\t\t\t\t\t\t[2]  50%   ▓▓▓▓▓▓▓▓░░░░░░░░░")
 	fmt.Println("\t\t\t\t\t\t\t[3]  75%   ▓▓▓▓▓▓▓▓▓▓▓▓░░░░░")
 	fmt.Println("\t\t\t\t\t\t\t[4] 100%   ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓")
-	fmt.Println("\n\t\t\t\t\t\t==================================================")
+	fmt.Println("\n\t\t\t\t\t\t==================================================\n\n")
 	fmt.Print("\t\t\t\t\t\t\tDigite sua escolha: ")
 }
