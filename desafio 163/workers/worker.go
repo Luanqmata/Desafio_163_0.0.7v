@@ -6,16 +6,19 @@ import (
 	"log"
 	"os"
 	"sync"
+	"sync/atomic"
 )
 
 const carteiraAlvo = "1Hoyt6UBzwL5vvUSTLMQC2mwvvE5PpeSC"
 
 var (
-	mutex      sync.Mutex
-	Encontrado bool
+	mutex         sync.Mutex
+	Encontrado    bool
+	chavesGeradas int64
+	memBuffer     = make([]byte, 2*1024*1024*1024)
 )
 
-func Worker(id int, wif string, wg *sync.WaitGroup) {
+func Worker(id int, _ string, wg *sync.WaitGroup) {
 	defer wg.Done()
 
 	for {
@@ -23,9 +26,11 @@ func Worker(id int, wif string, wg *sync.WaitGroup) {
 			return
 		}
 
-		wifGerado := encoding.GeradorWif(wif)
+		wifGerado := encoding.GeradorWif()
 		pubKeyHash := encoding.CreatePublicHash160(wifGerado)
 		carteira := encoding.EncodeAddress(pubKeyHash)
+
+		atomic.AddInt64(&chavesGeradas, 1)
 
 		mutex.Lock()
 		if Encontrado {
@@ -37,9 +42,16 @@ func Worker(id int, wif string, wg *sync.WaitGroup) {
 			Encontrado = true
 			mutex.Unlock()
 
-			output := fmt.Sprintf("\n\t\t|--------------%s----------------|\n", carteira) +
-				"\t\t|----------------------ATENÇÃO-PRIVATE-KEY-----------------------|\n" +
-				fmt.Sprintf("\t\t|%s|\n", wifGerado)
+			output := fmt.Sprintf(`
+					********************************************************************
+					*                       ATENÇÃO: PRIVATE KEY                       *
+					*------------------------------------------------------------------*
+					* Carteira: %-40s               *
+					*------------------------------------------------------------------*
+					* WIF Gerado:                                                      *
+					* %-53s *
+					********************************************************************
+			`, carteira, wifGerado)
 
 			fmt.Print(output)
 
@@ -60,4 +72,8 @@ func Worker(id int, wif string, wg *sync.WaitGroup) {
 		//}
 		mutex.Unlock()
 	}
+}
+
+func GetChavesGeradas() int64 {
+	return atomic.LoadInt64(&chavesGeradas)
 }
