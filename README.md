@@ -1,4 +1,4 @@
-# Desafio 163 Carteira bitcoin
+# Desafio 163 Carteira bitcoin - Moldado para xeon 2666 v3 e 2680 v4
 ## Canal: Inverstidor internacional 
 ## https://www.youtube.com/@investidorint
 
