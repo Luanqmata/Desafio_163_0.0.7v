@@ -14,7 +14,7 @@ import (
 func main() {
 	style.Bem_vindo()
 
-	encoding.InitWif("403b3d4xcxfx6x9xfx3xaxcx5x0x4xbxbx7x2x6x8x7x8xax4x0x8x3x3x3x7x3x")
+	encoding.InitWif("403b3d4fcxfx6x9xfx3xaxcx5x0x4xbxbx7x2x6x8x7x8xax4x0x8x3x3x3x7x3x")
 
 	style.Opcoes_uso_proc()
 
